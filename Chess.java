@@ -115,9 +115,13 @@ class SimpleChess {
 		positionfigures[1][14] = 170;
 		positionfigures[1][15] = 171;
 		
-		/*проверка king*/
-		Figure test = new King();
-		test.passibleMove(Cell, 85);
+		/*проверка
+		Cell[121] = new Cells(1, 1, 2, 0);
+		
+		int c;
+		Figure test = new Queen();
+		c = test.passibleMove(Cell, 121);
+		System.out.println(c);*/
 	}
 }
 
@@ -134,33 +138,205 @@ class Cells{
 
 abstract class Figure {
 	
-	abstract void passibleMove(Cells[] a, int b);
+	abstract int passibleMove(Cells[] a, int b);
 	
 }
 
 class King extends Figure {
 	@Override
-	void passibleMove(Cells[] a, int b){
+	int passibleMove(Cells[] a, int b){
 		int[] array = {-17, -16, -15, -1, 1, 15, 16, 17};
+		int[] passible = new int[8];
 		int c, j=0;
 		for (int i=0; i<8;i++){
 			c = b + array[i];
 			if (a[c].space == 1){
 				if (a[c].color != a[b].color){
+					passible[j]=c;
 					j++;
-					System.out.println(c);
 				}
 			}
 		}
+		if (j==0) {
+			c = 0;
+		}else{
+			c = (int) (Math.random()*j);
+			c = passible[c];
+		}
+		return c;
 	}
 }
 
-/*public class Queen extends Figure {
+class Knight extends Figure {
 	@Override
-	public void passibleMove(int[] a){
-		int[][] array = {{0, 1}, {-1, 1}, {1, 1}};
-		int[] passible = {0, 0, 0};
-		
+	int passibleMove(Cells[] a, int b){
+		int[] array = {-33, -31, -18, -14, 14, 18, 31, 33};
+		int[] passible = new int[8];
+		int c, j=0;
+		for (int i=0; i<8;i++){
+			c = b + array[i];
+			if (a[c].space == 1){
+				if (a[c].color != a[b].color){
+					passible[j]=c;
+					j++;
+				}
+			}
+		}
+		if (j==0) {
+			c = 0;
+		}else{
+			c = (int) (Math.random()*j);
+			c = passible[c];
+		}
+		return c;	
 	}
 }
-*/
+
+class Pawn extends Figure {
+	@Override
+	int passibleMove(Cells[] a, int b){
+		int[] array = {16, 15, 17};
+		int[] passible = new int[3];
+		int c, j=0;
+		for (int i=0; i<3;i++){
+			if (a[b].color == 1){
+				c = b + array[i];
+			}else{
+				c = b - array[i];
+			}
+			if (a[c].space == 1){
+				if (a[c].color != a[b].color){
+					if (i>0){
+						if (a[c].color != 0){
+							passible[j]=c;
+							j++;
+						}
+					}else{
+						if (a[c].color == 0){
+							passible[j]=c;
+							j++;
+						}
+					}
+				}
+			}
+		}
+		if (j==0) {
+			c = 0;
+		}else{
+			c = (int) (Math.random()*j);
+			c = passible[c];
+		}
+		return c;	
+	}
+}
+
+class Rook extends Figure {
+	@Override
+	int passibleMove(Cells[] a, int b){
+		int[] array = {-16, -1, 1, 16};
+		int[] passible = new int[14];
+		int c, j=0;
+		for (int i=0; i<4;i++){
+			c = b + array[i];
+			while (c>0){
+				if (a[c].space == 1){
+					if (a[c].color != a[b].color){
+						passible[j]=c;
+						j++;
+						if (a[c].color == 0){							
+							c = c + array[i];
+						}else{
+							c=0;
+						}
+					}else{
+						c=0;
+					}
+				}else{
+					c=0;
+				}
+			}
+		}
+		if (j==0) {
+			c = 0;
+		}else{
+			c = (int) (Math.random()*j);
+			c = passible[c];
+		}
+		return c;	
+	}
+}
+
+class Bishop extends Figure {
+	@Override
+	int passibleMove(Cells[] a, int b){
+		int[] array = {-17, -15, 15, 17};
+		int[] passible = new int[13];
+		int c, j=0;
+		for (int i=0; i<4;i++){
+			c = b + array[i];
+			while (c>0){
+				if (a[c].space == 1){
+					if (a[c].color != a[b].color){
+						passible[j]=c;
+						j++;
+						if (a[c].color == 0){							
+							c = c + array[i];
+						}else{
+							c=0;
+						}
+					}else{
+						c=0;
+					}
+				}else{
+					c=0;
+				}
+			}
+		}
+		if (j==0) {
+			c = 0;
+		}else{
+			c = (int) (Math.random()*j);
+			c = passible[c];
+		}
+		return c;	
+	}
+}
+
+class Queen extends Figure {
+	@Override
+	int passibleMove(Cells[] a, int b){
+		int[] array = {-17, -16, -15, -1, 1, 15, 16, 17};
+		int[] passible = new int[27];
+		int c, j=0;
+		for (int i=0; i<8;i++){
+			c = b + array[i];
+			while (c>0){
+				if (a[c].space == 1){
+					if (a[c].color != a[b].color){
+						passible[j]=c;
+						j++;
+						if (a[c].color == 0){							
+							c = c + array[i];
+						}else{
+							c=0;
+						}
+					}else{
+						c=0;
+					}
+				}else{
+					c=0;
+				}
+			}
+		}
+		if (j==0) {
+			c = 0;
+		}else{
+			c = (int) (Math.random()*j);
+			c = passible[c];
+		}
+		for (int i=0; i<j;i++){
+			System.out.println(passible[i]);
+		}
+		return c;	
+	}
+}
